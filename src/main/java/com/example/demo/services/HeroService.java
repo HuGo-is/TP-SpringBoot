@@ -2,7 +2,6 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Hero;
 import com.example.demo.repositories.HeroRepositorie;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +21,9 @@ public class HeroService {
     }
 
     public  Hero addHero(Hero hero) {
+        if (!hero.isValid()) {
+            throw new IllegalArgumentException("La somme des attributs ne doit pas dépasser 300.");
+        }
         return heroRepositorie.save(hero);
     }
 
@@ -35,7 +37,19 @@ public class HeroService {
             return null;
         }
         Random rand = new Random();
-        return heroes.get(rand.nextInt(heroes.size()));
+        Hero selectedHero = heroes.get(rand.nextInt(heroes.size()));
+
+        return new Hero(
+                selectedHero.getId(),
+                selectedHero.getName(),
+                selectedHero.getUniverse(),
+                selectedHero.getStrength(),
+                selectedHero.getDefense(),
+                selectedHero.getSpeed(),
+                selectedHero.getAccuracy(),
+                selectedHero.getIntelligence(),
+                selectedHero.getLuck()
+        );
     }
 
     public  Optional<Hero> searchHeroByName(String name) {
