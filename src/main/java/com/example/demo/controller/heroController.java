@@ -18,10 +18,11 @@ import java.util.Optional;
 @Tag(name = "Héro API", description = "Gestion des utilisateurs")
 public class heroController {
 
-    @Autowired
     private HeroService hService;
-    @Autowired
-    private GenericResponseService responseBuilder;
+
+    public heroController(HeroService hService, GenericResponseService responseBuilder) {
+        this.hService = hService;
+    }
 
     @Operation(summary = "Récupérer tous les héros", description = "Retourne la liste complète des héros")
     @ApiResponses(value = {
@@ -30,7 +31,7 @@ public class heroController {
     })
     @GetMapping
     public List<Hero> getAllHero() {
-        return HeroService.getAllHero();
+        return hService.getAllHero();
     }
 
     @Operation(summary = "Ajoute un héro", description = "endpoint pour ajouter un héro")
@@ -40,7 +41,7 @@ public class heroController {
     })
     @PostMapping
     public Hero addHero(@RequestBody Hero hero) {
-        return HeroService.addHero(hero);
+        return hService.addHero(hero);
     }
 
     @Operation(summary = "Recherche par id", description = "endpoint de recherche de héro par id bdd")
@@ -50,7 +51,7 @@ public class heroController {
     })
     @GetMapping("/{id}")
     public Optional<Hero> getHeroById(@PathVariable Long id) {
-        return HeroService.getHeroById(id);
+        return hService.getHeroById(id);
     }
 
     @Operation(summary = "Récupère un héro", description = "Retourne un héro au hasard")
@@ -60,7 +61,7 @@ public class heroController {
     })
     @GetMapping("/random")
     public Hero getRandomHero() {
-        return HeroService.getRandomHero();
+        return hService.getRandomHero();
     }
 
     @Operation(summary = "Chercher un héro", description = "enpoint de recherche d'un héro par son nom")
@@ -70,7 +71,7 @@ public class heroController {
     })
     @GetMapping("/search")
     public Optional<Hero> searchHeroByName(@RequestParam String name) {
-        return HeroService.searchHeroByName(name);
+        return hService.searchHeroByName(name);
     }
 }
 

@@ -11,22 +11,25 @@ import java.util.Random;
 @Service
 public class HeroService {
 
-    @Autowired
-    private static HeroRepositorie heroRepositorie;
+    private final HeroRepositorie heroRepositorie;
 
-    public static List<Hero> getAllHero() {
+    public HeroService(HeroRepositorie heroRepositorie) {
+        this.heroRepositorie = heroRepositorie;
+    }
+
+    public List<Hero> getAllHero() {
         return heroRepositorie.findAll();
     }
 
-    public static Hero addHero(Hero hero) {
+    public  Hero addHero(Hero hero) {
         return heroRepositorie.save(hero);
     }
 
-    public static Optional<Hero> getHeroById(Long id) {
+    public  Optional<Hero> getHeroById(Long id) {
         return heroRepositorie.findById(id);
     }
 
-    public static Hero getRandomHero() {
+    public  Hero getRandomHero() {
         List<Hero> heroes = heroRepositorie.findAll();
         if (heroes.isEmpty()) {
             return null;
@@ -35,7 +38,7 @@ public class HeroService {
         return heroes.get(rand.nextInt(heroes.size()));
     }
 
-    public static Optional<Hero> searchHeroByName(String name) {
+    public  Optional<Hero> searchHeroByName(String name) {
         return heroRepositorie.findByNameContainingIgnoreCase(name);
     }
 }
